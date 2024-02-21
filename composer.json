@@ -1,0 +1,72 @@
+{
+    "name": "danjohnson95/pinout",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Dan Johnson",
+            "email": "github@danjohnson.xyz"
+        }
+    ],
+    "minimum-stability": "stable",
+    "autoload": {
+        "psr-4": {
+            "DanJohnson95\\Pinout\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "DanJohnson95\\Pinout\\Tests\\": "tests/",
+            "Workbench\\App\\": "workbench/app/",
+            "Workbench\\Database\\Factories\\": "workbench/database/factories/",
+            "Workbench\\Database\\Seeders\\": "workbench/database/seeders/"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/pest",
+        "format": "vendor/bin/php-cs-fixer fix --allow-risky=yes",
+        "analyse": "vendor/bin/phpstan analyse",
+        "post-autoload-dump": [
+            "@clear",
+            "@prepare"
+        ],
+        "clear": "@php vendor/bin/testbench package:purge-skeleton --ansi",
+        "prepare": "@php vendor/bin/testbench package:discover --ansi",
+        "build": "@php vendor/bin/testbench workbench:build --ansi",
+        "serve": [
+            "Composer\\Config::disableProcessTimeout",
+            "@build",
+            "@php vendor/bin/testbench serve"
+        ],
+        "lint": [
+            "@php vendor/bin/phpstan analyse"
+        ]
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "DanJohnson95\\Pinout\\ServiceProvider"
+            ],
+            "aliases": {
+                "Pin": "DanJohnson95\\Pinout\\Facade"
+            }
+        }
+    },
+    "require": {
+        "illuminate/support": "^10.10.0|^11.0",
+        "illuminate/console": "^10.10.0|^11.0",
+        "symfony/process": "^6.4"
+    },
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "^3.4",
+        "orchestra/testbench": "^8.0|^9.0",
+        "larastan/larastan": "^2.7.0",
+        "pestphp/pest": "^1.20|^2.0",
+        "mockery/mockery": "^1.4",
+        "phpstan/phpstan-phpunit": "^1.1"
+    },
+    "config": {
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
+    }
+}

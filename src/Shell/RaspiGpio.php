@@ -4,7 +4,9 @@ namespace DanJohnson95\Pinout\Shell;
 
 use DanJohnson95\Pinout\Collections\PinStateCollection;
 use DanJohnson95\Pinout\Entities\PinState;
+use DanJohnson95\Pinout\Enums\Func;
 use DanJohnson95\Pinout\Enums\Level;
+use DanJohnson95\Pinout\Exceptions\CantSetPinToFunction;
 use DanJohnson95\Pinout\Exceptions\CommandUnavailable;
 use DanJohnson95\Pinout\Exceptions\PinNotFound;
 use Illuminate\Contracts\Process\ProcessResult;
@@ -72,5 +74,30 @@ class RaspiGpio implements Commandable
         $process = $this->run("get {$pinNumber}");
 
         return self::parsePinState($process->output());
+    }
+
+    public function setFunction(int $pinNumber, Func $func): self
+    {
+        $cmdFunc = match ($func) {
+            Func::INPUT => 'ip',
+            Func::OUTPUT => 'op',
+            default => throw new CantSetPinToFunction($pinNumber, $func),
+        };
+
+        $this->run("set {$pinNumber} {$cmdFunc}");
+
+        return $this;
+    }
+
+    public function setLevel(int $pinNumber, Level $level): self
+    {
+        $cmdLevel = match ($level) {
+            Level::LOW => 'dh',
+            Level::HIGH => 'dl',
+        };
+
+        $this->run("set {$pinNumber} {$cmdLevel}");
+
+        return $this;
     }
 }

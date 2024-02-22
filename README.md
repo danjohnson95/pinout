@@ -1,4 +1,4 @@
-![Pinout logo](art/laravel-pinout.png)
+<p align="center"><img src="/art/laravel-pinout.svg" alt="Pinout logo"></p>
 
 # Laravel Pinout
 

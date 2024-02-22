@@ -21,6 +21,13 @@ class PinCollection extends Collection
         return $this;
     }
 
+    public function makeOutput(): self
+    {
+        $this->each->makeOutput();
+
+        return $this;
+    }
+
     public function findByPinNumber(int $pinNumber): ?Pin
     {
         return $this->firstWhere(

@@ -55,13 +55,21 @@ If you're using Laravel 11 or later, the package will be auto-discovered. If you
 
 ## Usage
 
+### `Pinout` facade
+
 This package allows you to interact with hardware using the `Pinout` facade, and also comes with a couple of Artisan commands for convenience.
 
+Use the `pin` method to get a `Pin` instance for a specific pin:
+
 ```php
-use DanJohnson95\Pinout\Facades\Pin;
+$pin = \DanJohnson95\Pinout\Pinout::pin(13);
+```
 
-$pin = Pinout::pin(17);
+The argument is a reference to the GPIO pin number. (The BCM pin number is used, not the physical pin number.) See [https://pinout.xyz](pinout.xyz) for a visual reference.
 
+The `Pin` instance has methods for interacting with the pin:
+
+```php
 $pin->isOn(); // Whether the pin is "on" (high)
 $pin->isOff(); // Whether the pin is "off" (low)
 $pin->turnOn(); // Set the pin to "on"
@@ -69,6 +77,48 @@ $pin->turnOff(); // Set the pin to "off"
 $pin->makeInput(); // Set the pin to input mode
 $pin->makeOutput(); // Set the pin to output mode
 ```
+
+The facade also has a `pins` method for pulling multiple pins at once:
+
+```php
+$pins = \DanJohnson95\Pinout\Pinout::pins(13, 19, 26);
+```
+
+This will return a `PinCollection` instance, which is a collection of `Pin` instances.
+
+The `PinCollection` comes with some handy methods too:
+
+```php
+$pins->turnOn(); // Turns all pins on in the collection
+$pins->turnOff(); // Turns all pins off in the collection
+$pins->makeInput(); // Sets all pins to input mode
+$pins->makeOutput(); // Sets all pins to output mode
+$pins->findByPinNumber(13); // Returns the Pin instance for the given pin number
+$pins->whereIsOn(); // Returns a collection of pins that are on
+$pins->whereIsOff(); // Returns a collection of pins that are off
+```
+
+### Artisan commands
+
+This package comes with a couple of Artisan commands for convenience:
+
+```bash
+php artisan pinout:pin 13
+```
+
+This will return the current state of the pin.
+
+```bash
+php artisan pinout:on 13
+```
+
+This will turn pin 13 on.
+
+```bash
+php artisan pinout:off 13
+```
+
+This will turn pin 13 off.
 
 ## Roadmap
 

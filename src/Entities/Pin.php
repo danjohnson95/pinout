@@ -52,6 +52,15 @@ class Pin
         return $this->refresh()->level === Level::LOW;
     }
 
+    public function setLevel(Level $level): self
+    {
+        Pinout::setLevel($this, $level);
+
+        $this->refresh();
+
+        return $this;
+    }
+
     public function turnOn(): self
     {
         Pinout::setLevel($this, Level::HIGH);

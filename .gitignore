@@ -2,3 +2,4 @@ vendor
 *.cache
 composer.lock
 build
+.DS_Store

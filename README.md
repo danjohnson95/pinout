@@ -1,4 +1,4 @@
-<p align="center"><img src="/art/laravel-pinout.svg" alt="Pinout logo"></p>
+<p align="center"><img width="25%" src="/art/laravel-pinout.png?1" alt="Pinout logo"></p>
 
 # Laravel Pinout
 

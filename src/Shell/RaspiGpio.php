@@ -2,8 +2,8 @@
 
 namespace DanJohnson95\Pinout\Shell;
 
-use DanJohnson95\Pinout\Collections\PinStateCollection;
-use DanJohnson95\Pinout\Entities\PinState;
+use DanJohnson95\Pinout\Collections\PinCollection;
+use DanJohnson95\Pinout\Entities\Pin;
 use DanJohnson95\Pinout\Enums\Func;
 use DanJohnson95\Pinout\Enums\Level;
 use DanJohnson95\Pinout\Exceptions\CantSetPinToFunction;
@@ -16,18 +16,29 @@ class RaspiGpio implements Commandable
 {
     protected const EXECUTABLE = 'raspi-gpio';
 
+    protected function handleError(string $errorOutput): void
+    {
+        if (str_contains($errorOutput, 'command not found')) {
+            throw new CommandUnavailable();
+        }
+
+        if (preg_match("/Unknown\sGPIO\s\"(\d+)\"/", $errorOutput, $matches)) {
+            throw new PinNotFound((int) $matches[1]);
+        }
+    }
+
     protected function run(string $command): ProcessResult
     {
         $result = Process::run(self::EXECUTABLE . " {$command}");
 
-        if (!$result->successful() && str_contains($result->errorOutput(), 'command not found')) {
-            throw new CommandUnavailable();
+        if (!$result->successful()) {
+            $this->handleError($result->output());
         }
 
         return $result;
     }
 
-    protected static function parsePinState(string $state): PinState
+    protected static function parsePinState(string $state): Pin
     {
         $matches = [];
 
@@ -39,8 +50,8 @@ class RaspiGpio implements Commandable
 
         [, $pin, $level, $fsel, $alt, $func] = $matches;
 
-        return new PinState(
-            pin: (int) $pin,
+        return Pin::make(
+            pinNumber: (int) $pin,
             level: Level::from($level),
             fsel: (int) $fsel,
             func: $func,
@@ -48,18 +59,14 @@ class RaspiGpio implements Commandable
         );
     }
 
-    public function getAll(?array $pinNumbers): PinStateCollection
+    public function getAll(array $pinNumbers): PinCollection
     {
         $pins = implode(",", $pinNumbers);
 
         $process = $this->run("get {$pins}");
-        $lines = explode("\n", $process->output());
+        $lines = explode("\n", trim($process->output()));
 
-        if (count($lines) !== count($pinNumbers)) {
-            throw new PinNotFound(1);
-        }
-
-        $pinStates = new PinStateCollection();
+        $pinStates = PinCollection::make();
 
         foreach ($lines as $line) {
             $state = self::parsePinState($line);
@@ -69,7 +76,7 @@ class RaspiGpio implements Commandable
         return $pinStates;
     }
 
-    public function get(int $pinNumber): PinState
+    public function get(int $pinNumber): Pin
     {
         $process = $this->run("get {$pinNumber}");
 
@@ -92,8 +99,8 @@ class RaspiGpio implements Commandable
     public function setLevel(int $pinNumber, Level $level): self
     {
         $cmdLevel = match ($level) {
-            Level::LOW => 'dh',
-            Level::HIGH => 'dl',
+            Level::LOW => 'dl',
+            Level::HIGH => 'dh',
         };
 
         $this->run("set {$pinNumber} {$cmdLevel}");

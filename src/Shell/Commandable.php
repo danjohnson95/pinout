@@ -2,16 +2,16 @@
 
 namespace DanJohnson95\Pinout\Shell;
 
-use DanJohnson95\Pinout\Collections\PinStateCollection;
-use DanJohnson95\Pinout\Entities\PinState;
+use DanJohnson95\Pinout\Collections\PinCollection;
+use DanJohnson95\Pinout\Entities\Pin;
 use DanJohnson95\Pinout\Enums\Func;
 use DanJohnson95\Pinout\Enums\Level;
 
 interface Commandable
 {
-    public function getAll(?array $pinNumbers): PinStateCollection;
+    public function getAll(array $pinNumbers): PinCollection;
 
-    public function get(int $pinNumber): PinState;
+    public function get(int $pinNumber): Pin;
 
     public function setFunction(int $pinNumber, Func $func): self;
 

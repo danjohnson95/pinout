@@ -5,14 +5,13 @@ use DanJohnson95\Pinout\Enums\Level;
 use DanJohnson95\Pinout\Pinout;
 
 it('throws an error if an invalid pin number is given', function () {
-    $this->artisan('pinout:get hello')
+    $this->artisan('pinout:on hello')
         ->expectsOutput('Pin must be a number')
         ->assertExitCode(1);
 });
 
-it('returns the status of the given pin', function () {
-    Pinout::shouldReceive('pin')
-        ->with(1)
+it('turns the pin on', function () {
+    Pinout::shouldReceive('pin->turnOn')
         ->andReturn(Pin::make(
             pinNumber: 1,
             level: Level::HIGH,
@@ -21,6 +20,6 @@ it('returns the status of the given pin', function () {
             alt: null,
         ));
 
-    $this->artisan('pinout:get 1')
+    $this->artisan('pinout:on 1')
         ->expectsOutput('Pin 1 is currently HIGH');
 });

@@ -4,7 +4,7 @@ namespace DanJohnson95\Pinout\Console;
 
 use DanJohnson95\Pinout\Enums\Func;
 use DanJohnson95\Pinout\Enums\Level;
-use DanJohnson95\Pinout\Facade as Pin;
+use DanJohnson95\Pinout\Pinout;
 use Illuminate\Console\Command;
 
 class SetCommand extends Command
@@ -33,7 +33,7 @@ class SetCommand extends Command
 
         // Now set them.
         if ($func) {
-            Pin::setFunction($pinNumber, $func);
+            Pinout::setFunction($pinNumber, $func);
         }
 
         if ($level) {
@@ -42,6 +42,6 @@ class SetCommand extends Command
 
         $state = Pin::get($this->argument('pin'));
 
-        $this->info("Pin {$state->pin} is currently {$level}");
+        $this->info("Pin {$state->pinNumber} is currently {$level}");
     }
 }

@@ -7,7 +7,7 @@ use function PHPUnit\Framework\assertSame;
 use DanJohnson95\Pinout\Enums\Level;
 use DanJohnson95\Pinout\Exceptions\CommandUnavailable;
 use DanJohnson95\Pinout\Exceptions\PinNotFound;
-use DanJohnson95\Pinout\Facade as Pin;
+use DanJohnson95\Pinout\Pinout;
 use Illuminate\Support\Facades\Process;
 
 it('returns pin state for given pin', function () {
@@ -17,9 +17,9 @@ it('returns pin state for given pin', function () {
         ),
     ]);
 
-    $output = Pin::get(13);
+    $output = Pinout::pin(13);
 
-    assertSame(13, $output->pin);
+    assertSame(13, $output->pinNumber);
     assertSame(Level::HIGH, $output->level);
     assertSame(1, $output->fsel);
     assertSame('OUTPUT', $output->func);
@@ -32,7 +32,7 @@ it('sets alt to null when not defined', function () {
         ),
     ]);
 
-    $output = Pin::get(13);
+    $output = Pinout::pin(13);
 
     assertNull($output->alt);
 });
@@ -44,7 +44,7 @@ it('sets alt correctly when defined', function () {
         ),
     ]);
 
-    $output = Pin::get(13);
+    $output = Pinout::pin(13);
 
     assertSame(7, $output->alt);
 });
@@ -52,25 +52,25 @@ it('sets alt correctly when defined', function () {
 it('throws exception if pin doesnt exist', function () {
     Process::fake([
         'raspi-gpio get 69' => Process::result(
-            output: 'Error: This pin is not exported',
+            output: 'Unknown GPIO "69"',
             exitCode: 1,
         ),
     ]);
 
     $this->expectException(PinNotFound::class);
 
-    Pin::get(69);
+    Pinout::pin(69);
 });
 
 it('throws exception if raspi-gpio is not installed', function () {
     Process::fake([
         'raspi-gpio get 1' => Process::result(
-            output: 'Command not found',
+            output: 'zsh: command not found: raspi-gpio',
             exitCode: 1,
         ),
     ]);
 
     $this->expectException(CommandUnavailable::class);
 
-    Pin::get(1);
+    Pinout::pin(1);
 });

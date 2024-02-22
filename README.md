@@ -1,8 +1,8 @@
 <p align="center"><img width="25%" src="/art/laravel-pinout.png?1" alt="Pinout logo"></p>
 
-# Laravel Pinout
+# Pinout
 
-Connect your Laravel application to the physical world with Laravel Pinout, where code meets circuitry. **Hardware and web, seamlessly united** 🤝
+Connect your Laravel application to the physical world with Pinout, where code meets circuitry. **Hardware and web, seamlessly united** 🤝
 
 ## Features
 
@@ -15,7 +15,7 @@ These basic features open up a world of possibilities, from simple LED control t
 
 ## Hardware support
 
-At the moment, Laravel Pinout supports the following hardware:
+At the moment, Pinout supports the following hardware:
 
 | Model | Supported |
 | --- | --- |
@@ -40,7 +40,7 @@ At the moment, Laravel Pinout supports the following hardware:
 Install the package to an existing Laravel project:
 
 ```
-composer require danjohnson95/laravel-pinout
+composer require danjohnson95/pinout
 ```
 
 If you're using Laravel 11 or later, the package will be auto-discovered. If you're using an earlier version, you'll need to add the service provider to your `config/app.php` file:

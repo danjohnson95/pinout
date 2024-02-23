@@ -65,7 +65,7 @@ Use the `pin` method to get a `Pin` instance for a specific pin:
 $pin = \DanJohnson95\Pinout\Pinout::pin(13);
 ```
 
-The argument is a reference to the GPIO pin number. (The BCM pin number is used, not the physical pin number.) See [https://pinout.xyz](pinout.xyz) for a visual reference.
+The argument is a reference to the GPIO pin number. (The BCM pin number is used, not the physical pin number.) See [pinout.xyz](https://pinout.xyz) for a visual reference.
 
 The `Pin` instance has methods for interacting with the pin:
 

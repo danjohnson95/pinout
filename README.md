@@ -1,8 +1,8 @@
 <p align="center"><img width="25%" src="/art/laravel-pinout.png?1" alt="Pinout logo"></p>
 
-# Laravel Pinout
+# Pinout
 
-Connect your Laravel application to the physical world with Laravel Pinout, where code meets circuitry. **Hardware and web, seamlessly united** 🤝
+Connect your Laravel application to the physical world with Pinout, where code meets circuitry. **Hardware and web, seamlessly united** 🤝
 
 ## Features
 
@@ -20,7 +20,7 @@ And with the included drivers, you can also:
 
 ## Hardware support
 
-At the moment, Laravel Pinout supports the following hardware:
+At the moment, Pinout supports the following hardware:
 
 | Model | Supported |
 | --- | --- |
@@ -45,7 +45,7 @@ At the moment, Laravel Pinout supports the following hardware:
 Install the package to an existing Laravel project:
 
 ```
-composer require danjohnson95/laravel-pinout
+composer require danjohnson95/pinout
 ```
 
 If you're using Laravel 11 or later, the package will be auto-discovered. If you're using an earlier version, you'll need to add the service provider to your `config/app.php` file:
@@ -70,7 +70,7 @@ Use the `pin` method to get a `Pin` instance for a specific pin:
 $pin = \DanJohnson95\Pinout\Pinout::pin(13);
 ```
 
-The argument is a reference to the GPIO pin number. (The BCM pin number is used, not the physical pin number.) See [https://pinout.xyz](pinout.xyz) for a visual reference.
+The argument is a reference to the GPIO pin number. (The BCM pin number is used, not the physical pin number.) See [pinout.xyz](https://pinout.xyz) for a visual reference.
 
 The `Pin` instance has methods for interacting with the pin:
 

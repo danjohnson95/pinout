@@ -54,42 +54,26 @@ class Pin
 
     public function setLevel(Level $level): self
     {
-        Pinout::setLevel($this, $level);
-
-        $this->refresh();
-
-        return $this;
+        return Pinout::setLevel($this, $level);
     }
 
     public function turnOn(): self
     {
-        Pinout::setLevel($this, Level::HIGH);
-        $this->refresh();
-
-        return $this;
+        return Pinout::setLevel($this, Level::HIGH);
     }
 
     public function turnOff(): self
     {
-        Pinout::setLevel($this, Level::LOW);
-        $this->refresh();
-
-        return $this;
+        return Pinout::setLevel($this, Level::LOW);
     }
 
     public function makeInput(): self
     {
-        Pinout::setFunction($this, Func::INPUT);
-        $this->refresh();
-
-        return $this;
+        return Pinout::setFunction($this, Func::INPUT);
     }
 
     public function makeOutput(): self
     {
-        Pinout::setFunction($this, Func::OUTPUT);
-        $this->refresh();
-
-        return $this;
+        return Pinout::setFunction($this, Func::OUTPUT);
     }
 }

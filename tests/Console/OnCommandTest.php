@@ -1,7 +1,5 @@
 <?php
 
-use DanJohnson95\Pinout\Entities\Pin;
-use DanJohnson95\Pinout\Enums\Level;
 use DanJohnson95\Pinout\Pinout;
 
 it('throws an error if an invalid pin number is given', function () {
@@ -11,15 +9,10 @@ it('throws an error if an invalid pin number is given', function () {
 });
 
 it('turns the pin on', function () {
-    Pinout::shouldReceive('pin->turnOn')
-        ->andReturn(Pin::make(
-            pinNumber: 1,
-            level: Level::HIGH,
-            fsel: 1,
-            func: 'output',
-            alt: null,
-        ));
+    Pinout::fake();
 
     $this->artisan('pinout:on 1')
         ->expectsOutput('Pin 1 is currently HIGH');
+
+    Pinout::assertPinTurnedOn(1);
 });

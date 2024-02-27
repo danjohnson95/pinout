@@ -37,10 +37,10 @@ class SetCommand extends Command
         }
 
         if ($level) {
-            Pin::setLevel($pinNumber, $level);
+            Pinout::setLevel($pinNumber, $level);
         }
 
-        $state = Pin::get($this->argument('pin'));
+        $state = Pinout::get($this->argument('pin'));
 
         $this->info("Pin {$state->pinNumber} is currently {$level}");
     }

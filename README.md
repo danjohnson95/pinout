@@ -13,6 +13,11 @@ With a Laravel application running on supported hardware, you can:
 
 These basic features open up a world of possibilities, from simple LED control to complex robotics.
 
+And with the included drivers, you can also:
+
+- Display digits on a 7 segment display
+- Display anything on a 16x2 LCD display
+
 ## Hardware support
 
 At the moment, Laravel Pinout supports the following hardware:

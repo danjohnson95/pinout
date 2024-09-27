@@ -25,6 +25,21 @@ it('returns pin state for given pin', function () {
     assertSame('OUTPUT', $output->func);
 });
 
+it('returns pin state for given pin when fsel is not set', function () {
+    Process::fake([
+        'raspi-gpio get 13' => Process::result(
+            output: 'GPIO 13: level=0 func=INPUT',
+        ),
+    ]);
+
+    $input = Pinout::pin(13);
+
+    assertSame(13, $input->pinNumber);
+    assertSame(Level::LOW, $input->level);
+    assertSame(null, $input->fsel);
+    assertSame('INPUT', $input->func);
+});
+
 it('sets alt to null when not defined', function () {
     Process::fake([
         'raspi-gpio get 13' => Process::result(

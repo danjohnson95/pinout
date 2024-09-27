@@ -42,20 +42,19 @@ class RaspiGpio implements Commandable
     {
         $matches = [];
 
-        preg_match(
-            '/GPIO\s(\d+):\slevel=(1|0)\sfsel=(\d)\sa?l?t?=?(\d)?\s?func=(\w+)/',
-            $state,
-            $matches
-        );
+        [$prefix, $options] = explode(':', $state);
 
-        [, $pin, $level, $fsel, $alt, $func] = $matches;
+        preg_match('/GPIO\s(\d+)/', $prefix, $matches);
+        [, $pin] = $matches;
+
+        $options = parse_ini_string(str_replace(' ', PHP_EOL, $options));
 
         return Pin::make(
             pinNumber: (int) $pin,
-            level: Level::from($level),
-            fsel: (int) $fsel,
-            func: $func,
-            alt: $alt ? (int) $alt : null,
+            level: Level::from($options['level'] ?? 0),
+            fsel: isset($options['fsel']) ? (int) $options['fsel'] : null,
+            func: $options['func'] ?? null,
+            alt: $options['alt'] ?? null,
         );
     }
 

@@ -10,23 +10,14 @@ class Pin
 {
     public int $pinNumber;
     public Level $level;
-    public ?int $fsel;
-    public ?string $func;
-    public ?int $alt;
 
     public static function make(
         int $pinNumber,
         Level $level,
-        ?int $fsel = null,
-        ?string $func = null,
-        ?int $alt = null,
     ): self {
         $pin = new self();
         $pin->pinNumber = $pinNumber;
         $pin->level = $level;
-        $pin->fsel = $fsel;
-        $pin->func = $func;
-        $pin->alt = $alt;
 
         return $pin;
     }
@@ -35,9 +26,6 @@ class Pin
     {
         $pin = Pinout::pin($this->pinNumber);
         $this->level = $pin->level;
-        $this->fsel = $pin->fsel;
-        $this->func = $pin->func;
-        $this->alt = $pin->alt;
 
         return $this;
     }

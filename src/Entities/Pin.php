@@ -9,15 +9,18 @@ use DanJohnson95\Pinout\Pinout;
 class Pin
 {
     public int $pinNumber;
+    public Func $func;
     public Level $level;
 
     public static function make(
         int $pinNumber,
         Level $level,
+        Func $func,
     ): self {
         $pin = new self();
         $pin->pinNumber = $pinNumber;
         $pin->level = $level;
+        $pin->func = $func;
 
         return $pin;
     }
@@ -38,6 +41,16 @@ class Pin
     public function isOff(): bool
     {
         return $this->refresh()->level === Level::LOW;
+    }
+
+    public function isInput(): bool
+    {
+        return $this->refresh()->func === Func::INPUT;
+    }
+
+    public function isOutput(): bool
+    {
+        return $this->refresh()->func === Func::OUTPUT;
     }
 
     public function setLevel(Level $level): self

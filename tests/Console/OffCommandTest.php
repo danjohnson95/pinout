@@ -1,6 +1,9 @@
 <?php
 
-use DanJohnson95\Pinout\Pinout;
+use DanJohnson95\Pinout\Entities\Pin;
+use DanJohnson95\Pinout\Enums\Func;
+use DanJohnson95\Pinout\Enums\Level;
+use DanJohnson95\Pinout\Facades\PinService;
 
 it('throws an error if an invalid pin number is given', function () {
     $this->artisan('pinout:off hello')

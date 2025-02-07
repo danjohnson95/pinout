@@ -19,7 +19,14 @@ class OffCommand extends Command
             return 1;
         }
 
-        $pin = Pinout::pin($this->argument('pin'))->turnOff();
+        $pin = PinService::pin($this->argument('pin'));
+
+        if (! $pin->isOutput()) {
+            $this->error("Pin {$pin->pinNumber} isn't configured for output");
+            return 1;
+        }
+
+        $pin->turnOff();
 
         $this->info("Pin {$pin->pinNumber} is currently {$pin->level->name}");
     }

@@ -18,9 +18,6 @@ it('returns the status of the given pin', function () {
         ->andReturn(Pin::make(
             pinNumber: 1,
             level: Level::HIGH,
-            fsel: 1,
-            func: 'output',
-            alt: null,
         ));
 
     $this->artisan('pinout:get 1')

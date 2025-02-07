@@ -10,7 +10,7 @@ use DanJohnson95\Pinout\Facades\PinService;
 class Pin
 {
     public int $pinNumber;
-    public Func $func;
+    public ?Func $func;
     public Level $level;
 
     public static function make(
@@ -30,6 +30,7 @@ class Pin
     {
         $pin = PinService::pin($this->pinNumber);
         $this->level = $pin->level;
+        $this->func = $pin->func;
 
         return $this;
     }

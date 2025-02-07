@@ -24,7 +24,8 @@ class PinoutFake implements ManagesPins
         if (!$pin = $this->fakePins->findByPinNumber($pinNumber)) {
             $pin = Pin::make(
                 pinNumber: $pinNumber,
-                level: Level::LOW
+                level: Level::LOW,
+                func: Func::OUTPUT,
             );
 
             $this->fakePins->push($pin);

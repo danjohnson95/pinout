@@ -8,11 +8,22 @@ it('throws an error if an invalid pin number is given', function () {
         ->assertExitCode(1);
 });
 
+it('throws an error when the pin isn\'t configured for output', function () {
+    PinService::fake();
+
+    PinService::shouldReceive('pin')
+        ->andReturn(Pin::make(pinNumber: 1, level: Level::LOW, func: Func::INPUT));
+
+    $this->artisan('pinout:off 1')
+        ->expectsOutput('Pin 1 isn\'t configured for output')
+        ->assertExitCode(1);
+});
+
 it('turns the pin off', function () {
-    Pinout::fake();
+    PinService::fake();
 
     $this->artisan('pinout:off 1')
         ->expectsOutput('Pin 1 is currently LOW');
 
-    Pinout::assertPinTurnedOff(1);
+    PinService::assertPinTurnedOff(1);
 });

@@ -1,6 +1,6 @@
 <?php
 
-namespace DanJohnson95\Pinout;
+namespace DanJohnson95\Pinout\Services;
 
 use DanJohnson95\Pinout\Collections\PinCollection;
 use DanJohnson95\Pinout\Contracts\ManagesPins;
@@ -9,7 +9,7 @@ use DanJohnson95\Pinout\Enums\Func;
 use DanJohnson95\Pinout\Enums\Level;
 use DanJohnson95\Pinout\Shell\Commandable;
 
-class PinManager implements ManagesPins
+class PinService implements ManagesPins
 {
     public function __construct(protected Commandable $commandTool)
     {

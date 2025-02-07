@@ -5,6 +5,7 @@ namespace DanJohnson95\Pinout\Entities;
 use DanJohnson95\Pinout\Enums\Func;
 use DanJohnson95\Pinout\Enums\Level;
 use DanJohnson95\Pinout\Pinout;
+use DanJohnson95\Pinout\Facades\PinService;
 
 class Pin
 {
@@ -27,7 +28,7 @@ class Pin
 
     private function refresh(): self
     {
-        $pin = Pinout::pin($this->pinNumber);
+        $pin = PinService::pin($this->pinNumber);
         $this->level = $pin->level;
 
         return $this;
@@ -55,26 +56,26 @@ class Pin
 
     public function setLevel(Level $level): self
     {
-        return Pinout::setLevel($this, $level);
+        return PinService::setLevel($this, $level);
     }
 
     public function turnOn(): self
     {
-        return Pinout::setLevel($this, Level::HIGH);
+        return PinService::setLevel($this, Level::HIGH);
     }
 
     public function turnOff(): self
     {
-        return Pinout::setLevel($this, Level::LOW);
+        return PinService::setLevel($this, Level::LOW);
     }
 
     public function makeInput(): self
     {
-        return Pinout::setFunction($this, Func::INPUT);
+        return PinService::setFunction($this, Func::INPUT);
     }
 
     public function makeOutput(): self
     {
-        return Pinout::setFunction($this, Func::OUTPUT);
+        return PinService::setFunction($this, Func::OUTPUT);
     }
 }

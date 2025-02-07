@@ -2,7 +2,7 @@
 
 namespace DanJohnson95\Pinout\Console;
 
-use DanJohnson95\Pinout\Pinout;
+use DanJohnson95\Pinout\Facades\PinService;
 use Illuminate\Console\Command;
 
 class OffCommand extends Command

@@ -47,7 +47,7 @@
                 "DanJohnson95\\Pinout\\ServiceProvider"
             ],
             "aliases": {
-                "Pinout": "DanJohnson95\\Pinout\\Pinout"
+                "PinService": "DanJohnson95\\Pinout\\Facades\\PinService"
             }
         }
     },

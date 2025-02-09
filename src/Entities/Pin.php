@@ -28,6 +28,8 @@ class Pin
         $pin->func = $func;
         $pin->alt = $alt;
 
+        app(\DanJohnson95\Pinout\Shell\SysFile::class)->exportPin($pinNumber);
+
         return $pin;
     }
 

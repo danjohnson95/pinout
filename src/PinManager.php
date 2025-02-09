@@ -11,6 +11,9 @@ use DanJohnson95\Pinout\Shell\Commandable;
 
 class PinManager implements ManagesPins
 {
+    public $_onBoot;
+    public array $_definedPins;
+
     public function __construct(protected Commandable $commandTool)
     {
     }
@@ -37,5 +40,25 @@ class PinManager implements ManagesPins
         $this->commandTool->setFunction($pin->pinNumber, $func);
 
         return $pin;
+    }
+
+    public function doBoot($loop)
+    {
+        ($this->_onBoot)($loop);
+    }
+
+    public function onBoot(callable $func)
+    {
+        $this->_onBoot = $func;
+    }
+
+    public function definePins(array $pins)
+    {
+        $this->_definedPins = $pins;
+    }
+
+    public function getDefinedPins(): array
+    {
+        return $this->_definedPins;
     }
 }

@@ -40,7 +40,7 @@ class LCD1602
             $data7,
         ])->makeOutput()->turnOff();
 
-        $lcd->initialise();
+        $lcd->initialise()->enableDisplay()->clearDisplay();
 
         return $lcd;
     }
@@ -64,7 +64,7 @@ class LCD1602
         return $this;
     }
 
-    public function enableDisplay()
+    public function enableDisplay(): self
     {
         $this->instructionInputMode();
         $this->write8Bits(0x0E);
@@ -72,7 +72,7 @@ class LCD1602
         return $this;
     }
 
-    public function invertDisplay()
+    public function invertDisplay(): self
     {
         $this->instructionInputMode();
         $this->write8Bits(0x0D);
@@ -80,7 +80,7 @@ class LCD1602
         return $this;
     }
 
-    public function showCursor()
+    public function showCursor(): self
     {
         $this->instructionInputMode();
         $this->write8Bits(0x0E);
@@ -88,7 +88,7 @@ class LCD1602
         return $this;
     }
 
-    public function hideCursor()
+    public function hideCursor(): self
     {
         $this->instructionInputMode();
         $this->write8Bits(0x0C);
@@ -96,7 +96,7 @@ class LCD1602
         return $this;
     }
 
-    public function writeChar(string $char)
+    public function writeChar(string $char): self
     {
         $this->writeData(ord($char));
 
@@ -120,16 +120,16 @@ class LCD1602
     protected function pulseEnable(): self
     {
         $this->enable->turnOff();
-        usleep(1);
+        // usleep(1);
         $this->enable->turnOn();
-        usleep(1);
+        // usleep(1);
         $this->enable->turnOff();
-        usleep(100); // commands need >37us to settle
+        // usleep(100); // commands need >37us to settle
 
         return $this;
     }
 
-    protected function writeData(int $data)
+    protected function writeData(int $data): self
     {
         $this->dataInputMode();
         $this->write8Bits($data);

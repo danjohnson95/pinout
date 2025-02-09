@@ -4,13 +4,12 @@ namespace DanJohnson95\Pinout\Entities;
 
 use DanJohnson95\Pinout\Enums\Func;
 use DanJohnson95\Pinout\Enums\Level;
-use DanJohnson95\Pinout\Pinout;
 use DanJohnson95\Pinout\Facades\PinService;
 
 class Pin
 {
     public int $pinNumber;
-    public ?Func $func;
+    public Func $func;
     public Level $level;
 
     public static function make(

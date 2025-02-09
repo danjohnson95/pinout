@@ -1,6 +1,7 @@
 <?php
 
 use DanJohnson95\Pinout\Entities\Pin;
+use DanJohnson95\Pinout\Enums\Func;
 use DanJohnson95\Pinout\Enums\Level;
 use DanJohnson95\Pinout\Facades\PinService;
 
@@ -18,6 +19,7 @@ it('returns the status of the given pin', function () {
         ->andReturn(Pin::make(
             pinNumber: 1,
             level: Level::HIGH,
+            func: Func::OUTPUT,
         ));
 
     $this->artisan('pinout:get 1')

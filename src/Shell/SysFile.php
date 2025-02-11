@@ -14,18 +14,14 @@ class SysFile implements Commandable
 
     public function __construct()
     {
-        $this->baseDirectory = __DIR__ . "/../../../pinout-data-files";
-
-        $this->exportedPins = $this->getExportedPins();
+        $this->exportedPins = [];
     }
 
-    /**
-     * @return array<int>
-     */
-    protected function getExportedPins(): array
+    public function getExportedPins(): array
     {
         $exportedPins = [];
-        $exportedPinsFile = fopen("{$this->baseDirectory}/export", "r");
+        $exportedPinsFile = fopen("/sys/class/gpio/export", "r");
+
         while (($line = fgets($exportedPinsFile)) !== false) {
             $exportedPins[] = (int) $line;
         }
@@ -38,13 +34,11 @@ class SysFile implements Commandable
         return in_array($pinNumber, $this->exportedPins);
     }
 
-    protected function exportPin(int $pinNumber): void
+    public function exportPin(int $pinNumber): void
     {
-        $exportedPinsFile = fopen("{$this->baseDirectory}/export", "w");
-        fwrite($exportedPinsFile, $pinNumber);
-        fclose($exportedPinsFile);
+        shell_exec('gpio export ' . $pinNumber . ' output');
 
-        usleep(200 * 1000);
+        $this->exportedPins[] = $pinNumber;
     }
 
     public function getAll(array $pinNumbers): PinCollection
@@ -65,7 +59,7 @@ class SysFile implements Commandable
         }
 
         return Pin::make(
-            pinNumber: $pinNumber,
+            pinNumber: (int) $pinNumber,
             level: Level::from($this->getLevel($pinNumber)),
             func: $this->getFunction($pinNumber)
         );
@@ -76,6 +70,9 @@ class SysFile implements Commandable
         $functionFile = fopen("{$this->baseDirectory}/gpio{$pinNumber}/direction", "r");
         $function = fread($functionFile, 3);
         fclose($functionFile);
+
+        // TODO: temp
+        return Func::OUTPUT;
         return $function;
     }
 

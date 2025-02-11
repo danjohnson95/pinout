@@ -48,18 +48,10 @@ class LCD1602
     public function initialise(): self
     {
         // LCD needs 40 ms to start up after power on
-        usleep(40e3);
-
-        // Now put it in 4 bit mode, 2 lines, 5x8 characters
         $this->instructionInputMode();
-        usleep(45e3); // 4.5 ms
         $this->write8Bits(0x33);
-        usleep(45e3); // 4.5 ms
         $this->write8Bits(0x32);
-        usleep(150e3); // 150 us
         $this->write8Bits(0x28);
-
-        usleep(1523e3);
 
         return $this;
     }
@@ -160,7 +152,7 @@ class LCD1602
         $this->instructionInputMode();
         $this->write8Bits(0x01);
 
-        usleep(100);
+        // usleep(100);
 
         return $this;
     }
@@ -173,7 +165,7 @@ class LCD1602
         $this->instructionInputMode();
         $this->write8Bits(0x02);
 
-        usleep(100);
+        // usleep(100);
 
         return $this;
     }
@@ -186,7 +178,7 @@ class LCD1602
         $this->instructionInputMode();
         $this->write8Bits(0x18);
 
-        usleep(100);
+        // usleep(100);
 
         return $this;
     }
@@ -199,7 +191,7 @@ class LCD1602
         $this->instructionInputMode();
         $this->write8Bits(0x1C);
 
-        usleep(100);
+        // usleep(100);
 
         return $this;
     }
@@ -212,7 +204,7 @@ class LCD1602
         $this->instructionInputMode();
         $this->write8Bits(0x80 | ($row * 0x40 + $column));
 
-        usleep(100);
+        // usleep(100);
 
         return $this;
     }

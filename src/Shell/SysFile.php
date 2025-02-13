@@ -12,11 +12,9 @@ class SysFile implements Commandable
     protected array $exportedPins = [];
     protected string $baseDirectory = "/sys/class/gpio";
 
-    public function __construct()
-    {
-        $this->exportedPins = [];
-    }
-
+    /**
+     * @return array<Pin>
+     */
     public function getExportedPins(): array
     {
         $exportedPins = [];
@@ -25,7 +23,9 @@ class SysFile implements Commandable
         while (($line = fgets($exportedPinsFile)) !== false) {
             $exportedPins[] = (int) $line;
         }
+
         fclose($exportedPinsFile);
+
         return $exportedPins;
     }
 
@@ -59,8 +59,8 @@ class SysFile implements Commandable
         }
 
         return Pin::make(
-            pinNumber: (int) $pinNumber,
-            level: Level::from($this->getLevel($pinNumber)),
+            pinNumber: $pinNumber,
+            level: $this->getLevel($pinNumber),
             func: $this->getFunction($pinNumber)
         );
     }
@@ -71,9 +71,11 @@ class SysFile implements Commandable
         $function = fread($functionFile, 3);
         fclose($functionFile);
 
-        // TODO: temp
-        return Func::OUTPUT;
-        return $function;
+        if ($function === "in") {
+            return Func::INPUT;
+        } else {
+            return Func::OUTPUT;
+        }
     }
 
     protected function getLevel(int $pinNumber): Level
@@ -81,7 +83,12 @@ class SysFile implements Commandable
         $levelFile = fopen("{$this->baseDirectory}/gpio{$pinNumber}/value", "r");
         $level = fread($levelFile, 1);
         fclose($levelFile);
-        return $level;
+
+        if ($level === "0") {
+            $level = Level::LOW;
+        } else {
+            $level = Level::HIGH;
+        }
     }
 
     public function setFunction(int $pinNumber, Func $func): self

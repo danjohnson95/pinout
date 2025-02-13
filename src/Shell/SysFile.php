@@ -85,9 +85,9 @@ class SysFile implements Commandable
         fclose($levelFile);
 
         if ($level === "0") {
-            $level = Level::LOW;
+            return Level::LOW;
         } else {
-            $level = Level::HIGH;
+            return Level::HIGH;
         }
     }
 

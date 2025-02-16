@@ -24,6 +24,8 @@ class ServiceProvider extends BaseServiceProvider
             Console\GetCommand::class,
             Console\OnCommand::class,
             Console\OffCommand::class,
+            Console\ListenInterruptsCommand::class,
+            Console\StartCommand::class,
         ]);
     }
 }

@@ -11,4 +11,11 @@ return [
         // 1 => Direction::OUTPUT,
         // 2 => Direction::INPUT,
     ],
+
+    'php_bin' => '/usr/bin/php',
+
+    'gpio_listener' => [
+        'tmp_dir' => '/tmp/pinout/',
+        'pid' => 1,
+    ]
 ];

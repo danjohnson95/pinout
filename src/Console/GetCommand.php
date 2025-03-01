@@ -3,7 +3,7 @@
 namespace DanJohnson95\Pinout\Console;
 
 use DanJohnson95\Pinout\Enums\Level;
-use DanJohnson95\Pinout\Pinout;
+use DanJohnson95\Pinout\Facades\PinService;
 use Illuminate\Console\Command;
 
 class GetCommand extends Command
@@ -20,7 +20,7 @@ class GetCommand extends Command
             return 1;
         }
 
-        $state = Pinout::pin($this->argument('pin'));
+        $state = PinService::pin($this->argument('pin'));
 
         $level = match($state->level) {
             Level::LOW => 'LOW',

@@ -2,16 +2,20 @@
 
 namespace DanJohnson95\Pinout;
 
-use DanJohnson95\Pinout\Console\BenchmarkCommand;
 use DanJohnson95\Pinout\Shell\Commandable;
-use DanJohnson95\Pinout\Shell\RaspiGpio;
+use DanJohnson95\Pinout\Shell\SysFile;
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 
 class ServiceProvider extends BaseServiceProvider
 {
     public function register()
     {
-        $this->app->bind(Commandable::class, RaspiGpio::class);
+        $this->app->bind(Commandable::class, SysFile::class);
+
+        $this->mergeConfigFrom(
+            __DIR__ . '/Config/pinout.php',
+            'pinout',
+        );
     }
 
     public function boot()
@@ -20,6 +24,8 @@ class ServiceProvider extends BaseServiceProvider
             Console\GetCommand::class,
             Console\OnCommand::class,
             Console\OffCommand::class,
+            Console\ListenInterruptsCommand::class,
+            Console\StartCommand::class,
         ]);
     }
 }

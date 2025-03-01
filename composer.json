@@ -47,13 +47,13 @@
                 "DanJohnson95\\Pinout\\ServiceProvider"
             ],
             "aliases": {
-                "Pinout": "DanJohnson95\\Pinout\\Pinout"
+                "PinService": "DanJohnson95\\Pinout\\Facades\\PinService"
             }
         }
     },
     "require": {
-        "illuminate/support": "^10.10.0|^11.0",
-        "illuminate/console": "^10.10.0|^11.0",
+        "illuminate/support": "^10.10.0|^11.0|^12.0",
+        "illuminate/console": "^10.10.0|^11.0|^12.0",
         "symfony/process": "^6.4|^7.0"
     },
     "require-dev": {

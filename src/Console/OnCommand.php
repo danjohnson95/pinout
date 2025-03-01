@@ -2,7 +2,7 @@
 
 namespace DanJohnson95\Pinout\Console;
 
-use DanJohnson95\Pinout\Pinout;
+use DanJohnson95\Pinout\Facades\PinService;
 use Illuminate\Console\Command;
 
 class OnCommand extends Command
@@ -19,7 +19,14 @@ class OnCommand extends Command
             return 1;
         }
 
-        $pin = Pinout::pin($this->argument('pin'))->turnOn();
+        $pin = PinService::pin($this->argument('pin'));
+
+        if (! $pin->isOutput()) {
+            $this->error("Pin {$pin->pinNumber} isn't configured for output");
+            return 1;
+        }
+
+        $pin->turnOn();
 
         $this->info("Pin {$pin->pinNumber} is currently {$pin->level->name}");
     }

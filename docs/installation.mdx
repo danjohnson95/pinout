@@ -1,0 +1,25 @@
+## Requirements
+
+1. A [supported model of Raspberry Pi](/supported-hardware)
+2. PHP 8.1 or higher
+3. Laravel 10 or higher
+4. Some hardware!
+
+## Connecting to the Raspberry Pi
+
+Because your Laravel package runs directly on the Pi, you'll need to write your code on it and run commands on it too.
+
+There are two ways to do this:
+
+1) Connect your Pi to the internet, and communicate over SSH. You can use the VSCode [Remote Development over SSH](https://code.visualstudio.com/docs/remote/ssh) extension to write code from VSCode on your laptop.
+2) Connect a screen, keyboard and mouse to your Pi, and develop directly on your Pi.
+
+## Install the package
+
+Run the following command on your Pi within your Laravel project to install the package:
+
+```bash
+composer require danjohnson95/pinout
+```
+
+And that's it. Laravel will auto-discover the package, so you're ready to start interacting with hardware.

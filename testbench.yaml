@@ -1,11 +1,5 @@
 providers:
-  # - Workbench\App\Providers\WorkbenchServiceProvider
-
-migrations:
-  - workbench/database/migrations
-
-seeders:
-  - Workbench\Database\Seeders\DatabaseSeeder
+  # - DanJohnson95\Pinout\ServiceProvider
 
 workbench:
   start: '/'

@@ -1,6 +1,6 @@
 <?php
 
-namespace DanJohnson95\Pinout;
+namespace DanJohnson95\Pinout\Services;
 
 use DanJohnson95\Pinout\Collections\PinCollection;
 use DanJohnson95\Pinout\Contracts\ManagesPins;
@@ -9,8 +9,11 @@ use DanJohnson95\Pinout\Enums\Func;
 use DanJohnson95\Pinout\Enums\Level;
 use DanJohnson95\Pinout\Shell\Commandable;
 
-class PinManager implements ManagesPins
+class PinService implements ManagesPins
 {
+    public $_onBoot;
+    public array $_definedPins;
+
     public function __construct(protected Commandable $commandTool)
     {
     }
@@ -37,5 +40,25 @@ class PinManager implements ManagesPins
         $this->commandTool->setFunction($pin->pinNumber, $func);
 
         return $pin;
+    }
+
+    public function doBoot($loop)
+    {
+        ($this->_onBoot)($loop);
+    }
+
+    public function onBoot(callable $func)
+    {
+        $this->_onBoot = $func;
+    }
+
+    public function definePins(array $pins)
+    {
+        $this->_definedPins = $pins;
+    }
+
+    public function getDefinedPins(): array
+    {
+        return $this->_definedPins;
     }
 }

@@ -1,0 +1,30 @@
+{
+  "$schema": "https://mintlify.com/docs.json",
+  "theme": "mint",
+  "name": "Pinout",
+  "colors": {
+    "primary": "#16A34A",
+    "light": "#07C983",
+    "dark": "#15803D"
+  },
+  "navigation": {
+    "groups": [
+      {
+        "group": "Getting started",
+        "pages": [
+          "introduction",
+          "supported-hardware",
+          "installation",
+          "usage"
+        ]
+      },
+      {
+        "group": "Drivers",
+        "pages": [
+          "SevenSegmentDisplay",
+          "LCD1602"
+        ]
+      }
+    ]
+  }
+}

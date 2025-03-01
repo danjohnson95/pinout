@@ -60,14 +60,14 @@ If you're using Laravel 11 or later, the package will be auto-discovered. If you
 
 ## Usage
 
-### `Pinout` facade
+### `PinService` facade
 
-This package allows you to interact with hardware using the `Pinout` facade, and also comes with a couple of Artisan commands for convenience.
+This package allows you to interact with hardware using the `PinService` facade, and also comes with a couple of Artisan commands for convenience.
 
 Use the `pin` method to get a `Pin` instance for a specific pin:
 
 ```php
-$pin = \DanJohnson95\Pinout\Pinout::pin(13);
+$pin = \DanJohnson95\Pinout\Facades\PinService::pin(13);
 ```
 
 The argument is a reference to the GPIO pin number. (The BCM pin number is used, not the physical pin number.) See [pinout.xyz](https://pinout.xyz) for a visual reference.
@@ -86,7 +86,7 @@ $pin->makeOutput(); // Set the pin to output mode
 The facade also has a `pins` method for pulling multiple pins at once:
 
 ```php
-$pins = \DanJohnson95\Pinout\Pinout::pins(13, 19, 26);
+$pins = \DanJohnson95\Pinout\Facades\PinService::pins(13, 19, 26);
 ```
 
 This will return a `PinCollection` instance, which is a collection of `Pin` instances.
@@ -108,7 +108,7 @@ $pins->whereIsOff(); // Returns a collection of pins that are off
 This package comes with a couple of Artisan commands for convenience:
 
 ```bash
-php artisan pinout:pin 13
+php artisan pinout:get 13
 ```
 
 This will return the current state of the pin.

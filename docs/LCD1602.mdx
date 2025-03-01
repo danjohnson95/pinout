@@ -1,0 +1,96 @@
+The `LCD1602` driver is used to drive LCD1602 display modules.
+
+## Where to buy
+
+https://www.aliexpress.com/item/1005006100081942.html
+
+## How to wire
+
+The module has 16 pins.
+
+- **VSS** - GND
+- **VDD** - +5V
+- **V0** - >500 ohm resistor, connected to GND
+- **RS** - Any available GPIO pin
+- **RW** - GND
+- **E** - Any available GPIO pin
+- **D0** - Leave disconnected
+- **D1** - Leave disconnected
+- **D2** - Leave disconnected
+- **D3** - Leave disconnected
+- **D4** - Any available GPIO pin
+- **D5** - Any available GPIO pin
+- **D6** - Any available GPIO pin
+- **D7** - Any available GPIO pin
+- **A** - >500 ohm resistor, connected to +5V
+- **K** - GND
+
+## Using the driver
+
+Instantiate the driver using the static `make()` function, passing a reference to each pin.
+
+```php
+use DanJohnson95\Pinout\Facades\PinService;
+use DanJohnson95\Pinout\Drivers\LCD1602;
+
+$driver = LCD1602::make(
+    readSelect: PinService::pin(13), // RS pin
+    enable: PinService::pin(14), // E pin
+    data4: PinService::pin(15),
+    data5: PinService::pin(16),
+    data6: PinService::pin(17),
+    data7: PinService::pin(18),
+);
+```
+
+You can call the following methods on the driver:
+
+### Available methods
+
+#### `initialise`
+
+This should be called before interacting with the screen.
+
+#### `enableDisplay`
+
+Enables the display
+
+#### `invertDisplay`
+
+Inverts the colours of the display
+
+#### `showCursor`
+
+Shows the cursor
+
+#### `hideCursor`
+
+Hides the cursor
+
+#### `writeChar`
+
+Writes a single character to the display
+
+#### `clearDisplay`
+
+Clears the display
+
+#### `home`
+
+Moves the cursor to the beginning of the first line.
+
+#### `shiftLeft`
+
+Moves the cursor one position to the left
+
+#### `shiftRight`
+
+Moves the cursor one position to the right
+
+#### `setCursor`
+
+Moves the cursor to the specified row and column number
+
+#### `writeString`
+
+Writes the given string to the display.

@@ -1,0 +1,15 @@
+You can use the `PinService` facade anywhere in your Laravel code to get a reference to a pin using the `pin()` method.
+
+Pass the [pin number](https://pinout.xyz) as the argument.
+
+From there, you can use the `turnOn()` and `turnOff()` methods to manage the power state of output pins.
+
+```php
+use DanJohnson95\Pinout\Facades\PinService;
+
+$pin = PinService::pin(13);
+
+$pin->turnOn();
+
+$pin->turnOff();
+```

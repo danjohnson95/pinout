@@ -94,7 +94,10 @@ class MAX7219
         if ($decimalPoint) {
             $value |= 0x80;
         }
+
         $this->sendCommand(self::DIGIT_0 + $digit, $value);
+
+        return $this;
     }
 
     public function displayNumber(int $number): self

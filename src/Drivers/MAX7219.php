@@ -11,6 +11,8 @@ class MAX7219
     protected Pin $clk;
     protected Pin $cs;
 
+    const NUMBER_OF_DIGITS = 8;
+
     const NO_OP = 0x00;
     const DIGIT_0 = 0x01;
     const DIGIT_1 = 0x02;
@@ -43,7 +45,7 @@ class MAX7219
 
     protected function shiftOut(int $data): void
     {
-        for ($i = 7; $i >= 0; $i--) {
+        for ($i = (self::NUMBER_OF_DIGITS - 1); $i >= 0; $i--) {
             $this->clk->turnOff();
             $this->din->setLevel(($data >> $i) & 1 ? Level::HIGH : Level::LOW);
             $this->clk->turnOn();
@@ -87,21 +89,24 @@ class MAX7219
 
     public function displayDigit(int $digit, int $value, bool $decimalPoint = false): self
     {
-        if ($digit < 0 || $digit > 7) {
+        if ($digit < 0 || $digit > (self::NUMBER_OF_DIGITS - 1)) {
             throw new \InvalidArgumentException("Digit must be between 0 and 7");
         }
         $value &= 0x0F;
         if ($decimalPoint) {
             $value |= 0x80;
         }
+
         $this->sendCommand(self::DIGIT_0 + $digit, $value);
+
+        return $this;
     }
 
     public function displayNumber(int $number): self
     {
-        $number = str_pad($number, 8, " ", STR_PAD_LEFT);
-        for ($i = 0; $i < 8; $i++) {
-            $this->displayDigit($i, ord($number[$i]));
+        $number = str_pad($number, self::NUMBER_OF_DIGITS, " ", STR_PAD_LEFT);
+        for ($i = 0; $i < self::NUMBER_OF_DIGITS; $i++) {
+            $this->displayDigit(self::NUMBER_OF_DIGITS - 1 - $i, ord($number[$i]));
         }
 
         return $this;

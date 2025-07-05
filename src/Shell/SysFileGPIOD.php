@@ -110,12 +110,10 @@ class SysFileGPIOD implements Commandable
             if ($cached === null) {
                 throw new \Exception("Cannot determine level of output line $pinNumber — no cached value.");
             }
-            return Level::fromCache($cached);
+            return $cached;
         }
 
-        dd('test');
-
-        Cache::put("gpio.output.$pinNumber", $value->toCache());
+        Cache::put("gpio.output.$pinNumber", $value);
         return $value;
     }
 }

@@ -28,7 +28,7 @@ class SetCommand extends Command
             $func = Func::tryFrom($func);
         }
 
-        if ($level = $this->option('level')) {
+        if (($level = $this->option('level')) !== null) {
             $level = Level::tryFrom($level);
         }
 

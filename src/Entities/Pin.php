@@ -22,7 +22,7 @@ class Pin
         $pin->level = $level;
         $pin->func = $func;
 
-        app(\DanJohnson95\Pinout\Shell\SysFile::class)->exportPin($pinNumber);
+        app(\DanJohnson95\Pinout\Shell\Commandable::class)->exportPin($pinNumber);
 
         return $pin;
     }

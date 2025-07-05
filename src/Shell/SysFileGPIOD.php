@@ -48,6 +48,10 @@ class SysFileGPIOD implements Commandable
         return $this;
     }
 
+    public function exportPin(int $pinNumber): self
+    {
+        return $this;
+    }
 
     public function setLevel(int $pinNumber, Level $level): self
     {

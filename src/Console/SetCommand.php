@@ -43,6 +43,7 @@ class SetCommand extends Command
 
         $state = PinService::pin($this->argument('pin'));
 
-        $this->info("Pin {$state->pinNumber} is currently {$level}");
+        $levelText = $level?->value ?? $level;
+        $this->info("Pin {$state->pinNumber} is currently {$levelText}");
     }
 }

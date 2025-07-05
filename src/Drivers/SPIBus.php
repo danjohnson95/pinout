@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace DanJohnson956\Pinout\Drivers;
+namespace DanJohnson95\Pinout\Drivers;
 
 use DanJohnson95\Pinout\Entities\Pin;
 use DanJohnson95\Pinout\Enums\SPIMode;

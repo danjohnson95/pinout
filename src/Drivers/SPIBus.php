@@ -118,7 +118,7 @@ class SPIBus
         for ($i = 0; $i < $bitCount; $i++) {
             $this->setClock(SPIClockStage::READY);
             $this->setClock(SPIClockStage::SAMPLED);
-            $$this->readBits .= $this->dataIn->isOn()? '1' : '0';
+            $this->readBits .= $this->dataIn->isOn()? '1' : '0';
         }
 
         $this->setClock(SPIClockStage::READY);

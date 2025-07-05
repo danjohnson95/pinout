@@ -9,37 +9,7 @@ use DanJohnson95\Pinout\Enums\Level;
 
 class SysFileGPIOD implements Commandable
 {
-    protected array $exportedPins = [];
-    protected string $baseDirectory = "/sys/class/gpio";
-
-    /**
-     * @return array<Pin>
-     */
-    public function getExportedPins(): array
-    {
-        $exportedPins = [];
-        $exportedPinsFile = fopen("/sys/class/gpio/export", "r");
-
-        while (($line = fgets($exportedPinsFile)) !== false) {
-            $exportedPins[] = (int) $line;
-        }
-
-        fclose($exportedPinsFile);
-
-        return $exportedPins;
-    }
-
-    protected function pinIsExported(int $pinNumber): bool
-    {
-        return in_array($pinNumber, $this->exportedPins);
-    }
-
-    public function exportPin(int $pinNumber): void
-    {
-        shell_exec('gpio export ' . $pinNumber . ' output');
-
-        $this->exportedPins[] = $pinNumber;
-    }
+    protected ?string $gpioChip;
 
     public function getAll(array $pinNumbers): PinCollection
     {
@@ -54,10 +24,6 @@ class SysFileGPIOD implements Commandable
 
     public function get(int $pinNumber): Pin
     {
-        if (! $this->pinIsExported($pinNumber)) {
-            $this->exportPin($pinNumber);
-        }
-
         return Pin::make(
             pinNumber: $pinNumber,
             level: $this->getLevel($pinNumber),
@@ -67,20 +33,32 @@ class SysFileGPIOD implements Commandable
 
     protected function getFunction(int $pinNumber): Func
     {
-        $functionFile = fopen("{$this->baseDirectory}/gpio{$pinNumber}/direction", "r");
-        $function = fread($functionFile, 3);
-        fclose($functionFile);
+        $chip = $this->gpioChip; // adjust if needed
+        $line = $pinNumber;
 
-        if ($function === "in") {
-            return Func::INPUT;
-        } else {
-            return Func::OUTPUT;
+        $output = shell_exec("gpioinfo $chip | grep -E '^\\s*line\\s+$line:'");
+
+        if (!$output) {
+            throw new \Exception("Could not find GPIO line $line on $chip");
         }
+
+        if (preg_match('/\b(input|output)\b/', $output, $matches)) {
+            $direction = $matches[1];
+
+            return match ($direction) {
+                'input' => Func::INPUT,
+                'output' => Func::OUTPUT,
+                default => throw new \Exception("Unknown direction '$direction'"),
+            };
+        }
+
+        throw new \Exception("Unable to determine direction for GPIO line $line");
     }
+
 
     protected function getLevel(int $pinNumber): Level
     {
-        $chip = config('pinout.gpio_chip');
+        $chip = $this->gpioChip;
         $level = trim(shell_exec("gpioget $chip $pinNumber"));
 
         if ($level === "0") {
@@ -121,5 +99,10 @@ class SysFileGPIOD implements Commandable
         fwrite($levelFile, $level->value);
 
         return $this;
+    }
+
+    public function __construct()
+    {
+        $this->gpioChip = config('pinout.gpio_chip')
     }
 }

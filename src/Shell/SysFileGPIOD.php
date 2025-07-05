@@ -59,14 +59,16 @@ class SysFileGPIOD implements Commandable
         $line = $pinNumber;
         $value = $level->value;
 
-        $result = shell_exec("gpioset $chip $line=$value");
+        $command = "gpioset $chip $line=$value";
+        exec($command, $output, $exitCode);
 
-        if ($result === null) {
-            throw new \Exception("Failed to set GPIO level on line $line");
+        if ($exitCode !== 0) {
+            throw new \Exception("Failed to set GPIO level on line $line. Exit code: $exitCode");
         }
 
         return $this;
     }
+
 
 
     public function __construct()

@@ -113,7 +113,7 @@ class SysFileGPIOD implements Commandable
             return $cached;
         }
 
-        Cache::put("gpio.output.$pinNumber", $level);
-        return $level;
+        Cache::put("gpio.output.$pinNumber", $value);
+        return $value;
     }
 }

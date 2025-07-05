@@ -24,4 +24,5 @@ return [
     ],
 
     'sys_file' => SysFileGPIOD::class,
+    'gpio_chip' => 'gpiochip0'
 ];

@@ -105,7 +105,7 @@ class SysFileGPIOD implements Commandable
         ?Level $value = null
     ): ?Level {
         if ($value === null) {
-            $cached = Session::get("gpio.output.$pinNumber", null);
+            $cached = Cache::get("gpio.output.$pinNumber", null);
 
             if ($cached === null) {
                 throw new \Exception("Cannot determine level of output line $pinNumber — no cached value.");

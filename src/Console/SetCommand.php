@@ -9,7 +9,7 @@ use Illuminate\Console\Command;
 
 class SetCommand extends Command
 {
-    protected $signature = 'pinout:set {pin} {--func} {--level}';
+    protected $signature = 'pinout:set {pin} {--func=} {--level=}';
     protected $description = 'Sets the state of the pin';
 
     public function handle()

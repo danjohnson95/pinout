@@ -100,7 +100,7 @@ class SPIBus
     ): self {
         collect(str_split($bits))->each(function (string $bit) {
             $this->setClock(SPIClockStage::READY);
-            if ($bit) {
+            if ($bit === '1') {
                 $this->dataOut->turnOn();
             } else {
                 $this->dataOut->turnOff();

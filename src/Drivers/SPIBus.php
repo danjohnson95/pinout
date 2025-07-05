@@ -10,6 +10,8 @@ use DanJohnson95\Pinout\Enums\SPIClockStage;
 
 class SPIBus
 {
+    public string $readBits = '';
+
     public static function make (
         Pin $chipSelect,
         Pin $clock,
@@ -111,15 +113,15 @@ class SPIBus
 
     public function readBits(
         int $bitCount
-    ): string {
-        $bitString = '';
+    ): self {
+        $this->readBits = '';
         for ($i = 0; $i < $bitCount; $i++) {
             $this->setClock(SPIClockStage::READY);
             $this->setClock(SPIClockStage::SAMPLED);
-            $bitString .= $this->dataIn->isOn()? '1' : '0';
+            $$this->readBits .= $this->dataIn->isOn()? '1' : '0';
         }
 
         $this->setClock(SPIClockStage::READY);
-        return $bitString;
+        return $this;
     }
 }

@@ -103,6 +103,6 @@ class SysFileGPIOD implements Commandable
 
     public function __construct()
     {
-        $this->gpioChip = config('pinout.gpio_chip')
+        $this->gpioChip = config('pinout.gpio_chip');
     }
 }

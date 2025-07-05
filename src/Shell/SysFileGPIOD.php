@@ -27,34 +27,9 @@ class SysFileGPIOD implements Commandable
         return Pin::make(
             pinNumber: $pinNumber,
             level: $this->getLevel($pinNumber),
-            func: $this->getFunction($pinNumber)
+            func: Func::INPUT
         );
     }
-
-    protected function getFunction(int $pinNumber): Func
-    {
-        $chip = $this->gpioChip; // adjust if needed
-        $line = $pinNumber;
-
-        $output = shell_exec("gpioinfo $chip | grep -E '^\\s*line\\s+$line:'");
-
-        if (!$output) {
-            throw new \Exception("Could not find GPIO line $line on $chip");
-        }
-
-        if (preg_match('/\b(input|output)\b/', $output, $matches)) {
-            $direction = $matches[1];
-
-            return match ($direction) {
-                'input' => Func::INPUT,
-                'output' => Func::OUTPUT,
-                default => throw new \Exception("Unknown direction '$direction'"),
-            };
-        }
-
-        throw new \Exception("Unable to determine direction for GPIO line $line");
-    }
-
 
     protected function getLevel(int $pinNumber): Level
     {
@@ -70,18 +45,6 @@ class SysFileGPIOD implements Commandable
 
     public function setFunction(int $pinNumber, Func $func): self
     {
-        $chip = $this->gpioChip;
-        $line = $pinNumber;
-
-        if ($func === Func::INPUT) {
-            $result = shell_exec("gpiod configure $chip $line input");
-        } else {
-            $result = shell_exec("gpioset $chip $line=0");
-        }
-
-        if ($result === null) {
-            throw new \Exception("Failed to set direction for GPIO line $line on $chip");
-        }
         return $this;
     }
 

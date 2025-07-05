@@ -99,9 +99,9 @@ class SPIBus
         collect(str_split($bits))->each(function (string $bit) {
             $this->setClock(SPIClockStage::READY);
             if ($bit) {
-                $this->$dataOut->turnOn();
+                $this->dataOut->turnOn();
             } else {
-                $this->$dataOut->turnOff();
+                $this->dataOut->turnOff();
             }
             $this->setClock(SPIClockStage::SAMPLED);
         });

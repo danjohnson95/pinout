@@ -6,7 +6,7 @@ use DanJohnson95\Pinout\Collections\PinCollection;
 use DanJohnson95\Pinout\Entities\Pin;
 use DanJohnson95\Pinout\Enums\Func;
 use DanJohnson95\Pinout\Enums\Level;
-use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Cache;
 
 class SysFileGPIOD implements Commandable
 {
@@ -45,15 +45,7 @@ class SysFileGPIOD implements Commandable
         $gpioinfo = shell_exec("gpioinfo $chip | grep -E '^\\s*line\\s+$pinNumber:'");
 
         if (str_contains($gpioinfo, 'output')) {
-            // Check flash session for cached output level
-            $cached = Session::get("gpio.output.$pinNumber");
-
-            if ($cached !== null) {
-                return Level::from($cached);
-            }
-
-            // If output but no cached value, assume unknown state
-            throw new \Exception("Cannot determine level of output line $pinNumber — no cached value.");
+            return $this->cache($pinNumber);
         }
 
         // Input — safe to read
@@ -104,8 +96,25 @@ class SysFileGPIOD implements Commandable
         }
 
         // Flash level into session
-        Session::flash("gpio.output.$pinNumber", $value);
-
+        $this->cache($pinNumber, $level);
         return $this;
+    }
+
+    private function cache(
+        int $pinNumber,
+        ?Level $value = null
+    ): ?Level {
+        if ($value === null) {
+            $cached = Session::get("gpio.output.$pinNumber", null);
+
+            if ($cached === null) {
+                throw new \Exception("Cannot determine level of output line $pinNumber — no cached value.");
+            }
+            return $cached;
+        }
+
+        $level = Level::from($value);
+        Cache::put("gpio.output.$pinNumber", $level);
+        return $level;
     }
 }

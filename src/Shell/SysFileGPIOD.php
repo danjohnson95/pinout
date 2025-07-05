@@ -70,36 +70,37 @@ class SysFileGPIOD implements Commandable
 
     public function setFunction(int $pinNumber, Func $func): self
     {
-        if (! $this->pinIsExported($pinNumber)) {
-            $this->exportPin($pinNumber);
-        }
-
-        // Now that the pin is exported, we can set its function
-        $functionFile = fopen("{$this->baseDirectory}/gpio{$pinNumber}/direction", "w");
+        $chip = $this->gpioChip;
+        $line = $pinNumber;
 
         if ($func === Func::INPUT) {
-            $func = "in";
+            $result = shell_exec("gpiod configure $chip $line input");
         } else {
-            $func = "out";
+            $result = shell_exec("gpioset $chip $line=0");
         }
 
-        fwrite($functionFile, $func);
-
+        if ($result === null) {
+            throw new \Exception("Failed to set direction for GPIO line $line on $chip");
+        }
         return $this;
     }
+
 
     public function setLevel(int $pinNumber, Level $level): self
     {
-        if (! $this->pinIsExported($pinNumber)) {
-            $this->exportPin($pinNumber);
-        }
+        $chip = $this->gpioChip;
+        $line = $pinNumber;
+        $value = $level->value;
 
-        // Now that the pin is exported, we can set its level
-        $levelFile = fopen("{$this->baseDirectory}/gpio{$pinNumber}/value", "w");
-        fwrite($levelFile, $level->value);
+        $result = shell_exec("gpioset $chip $line=$value");
+
+        if ($result === null) {
+            throw new \Exception("Failed to set GPIO level on line $line");
+        }
 
         return $this;
     }
+
 
     public function __construct()
     {

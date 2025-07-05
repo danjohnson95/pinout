@@ -34,11 +34,11 @@ class SetCommand extends Command
 
         // Now set them.
         if ($func) {
-            app(Commandable::class)::setFunction($pinNumber, $func);
+            app(Commandable::class)->setFunction($pinNumber, $func);
         }
 
         if ($level) {
-            app(Commandable::class)::setLevel($pinNumber, $level);
+            app(Commandable::class)->setLevel($pinNumber, $level);
         }
 
         $state = PinService::pin($this->argument('pin'));

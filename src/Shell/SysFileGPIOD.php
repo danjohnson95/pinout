@@ -79,7 +79,8 @@ class SysFileGPIOD implements Commandable
         ?Level $level = null
     ): self {
         if ($func === Func::INPUT) {
-            $this->getLevel($pinNumber);
+            $chip = $this->gpioChip;
+            shell_exec("gpioget $chip $pinNumber");
             return $this;
         }
 

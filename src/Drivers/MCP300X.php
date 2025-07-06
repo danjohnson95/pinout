@@ -76,7 +76,7 @@ class MCP300X
                 true
             )->disableChip();
 
-        $data = substr($$this->spi->readBits, -10);
+        $data = substr($this->spi->readBits, -10);
         $analogLevel = bindec($data);
         return ($this->vcc / $this->maxVoltageInt) * $analogLevel;
     }

@@ -7,7 +7,7 @@ namespace DanJohnson95\Pinout\Drivers;
 use DanJohnson95\Pinout\Entities\Pin;
 use DanJohnson95\Pinout\Enums\SPIMode;
 use DanJohnson95\Pinout\Enums\MCP;
-use DanJohnson95\Pinout\Devices\SPIBus;
+use DanJohnson95\Pinout\Drivers\SPIBus;
 
 class MCP300X
 {

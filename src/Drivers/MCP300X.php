@@ -65,7 +65,7 @@ class MCP300X
             throw new \Exception("MCP300X error : Pin $pinNumber is not a valid pin");
         }
 
-        if ($pinNumber > $this->mcp3004MaxPin) {
+        if (($this->model == MCP::MCP3004) && ($pinNumber > $this->mcp3004MaxPin)) {
             throw new \Exception("MCP300x error : Pin $pinNumber is not a valid pin on MCP3004");
         }
 

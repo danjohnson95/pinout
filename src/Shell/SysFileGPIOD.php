@@ -81,7 +81,6 @@ class SysFileGPIOD implements Commandable
         if ($func === Func::INPUT) {
             $chip = $this->gpioChip;
             shell_exec("gpioget $chip $pinNumber");
-            dd(debug_backtrace());
             return $this;
         }
 

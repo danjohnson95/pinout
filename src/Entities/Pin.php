@@ -73,7 +73,7 @@ class Pin
 
     public function makeInput(): self
     {
-        return dd(PinService::setFunction($this, Func::INPUT));
+        return PinService::setFunction($this, Func::INPUT);
     }
 
     public function makeOutput(): self

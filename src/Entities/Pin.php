@@ -38,6 +38,7 @@ class Pin
 
     public function isOn(): bool
     {
+        dump($level = $this->isInput());
         return $this->refresh()->level === Level::HIGH;
     }
 

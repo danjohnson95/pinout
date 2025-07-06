@@ -111,7 +111,7 @@ class SPIBus
             }
             $this->setClock(SPIClockStage::SAMPLED);
             if ($readWhileWriting) {
-                $this->readBits .= $this->dataIn->isOn()? '1' : '0';
+                $this->readBits .= $this->dataIn->isOn() ? '1' : '0';
             }
         });
         $this->setClock(SPIClockStage::READY);

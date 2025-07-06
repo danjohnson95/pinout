@@ -25,12 +25,14 @@ class MCP300X
     ): self {
 
         return new self(
-            spi: app()->makeWith([
-                'chipSelect' => $chipSelect,
-                'clock' => $clock,
-                'dataIn' => $dataIn,
-                'dataOut' => $dataOut,
-                'mode' => SPIMode::MODE0
+            spi: app()->makeWith(
+                SPIBuss::class,
+                [
+                    'chipSelect' => $chipSelect,
+                    'clock' => $clock,
+                    'dataIn' => $dataIn,
+                    'dataOut' => $dataOut,
+                    'mode' => SPIMode::MODE0
             ]),
             vcc: $vcc,
             model: $model

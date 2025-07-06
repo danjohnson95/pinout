@@ -15,16 +15,16 @@ class SPIBus
     public static function make (
         Pin $chipSelect,
         Pin $clock,
-        Pin $dataIn,
-        Pin $dataOut,
+        Pin $miSO,
+        Pin $moSI,
         SPIMode $mode
     ): self {
         
         return (new self(
             $chipSelect,
             $clock,
-            $dataIn,
-            $dataOut,
+            $miSO,
+            $moSI,
             $mode
         ))->init();
     }
@@ -32,8 +32,8 @@ class SPIBus
     private function __construct (
         protected Pin $chipSelect,
         protected Pin $clock,
-        protected Pin $dataIn,
-        protected Pin $dataOut,
+        protected Pin $miSO,
+        protected Pin $moSI,
         protected SPIMode $mode
     ) {
         //
@@ -42,8 +42,8 @@ class SPIBus
     public function init(): self
     {
         $this->clock->turnOff();
-        $this->dataOut->turnOff();
-        $this->dataIn->makeInput();
+        $this->moSI->turnOff();
+        $this->miSO->makeInput();
         $this->disableChip();
         return $this;
     }
@@ -105,13 +105,13 @@ class SPIBus
         collect(str_split($bits))->each(function (string $bit) use ($readWhileWriting) {
             $this->setClock(SPIClockStage::READY);
             if ($bit === '1') {
-                $this->dataOut->turnOn();
+                $this->moSI->turnOn();
             } else {
-                $this->dataOut->turnOff();
+                $this->moSI->turnOff();
             }
             $this->setClock(SPIClockStage::SAMPLED);
             if ($readWhileWriting) {
-                $this->readBits .= $this->dataIn->isOn() ? '1' : '0';
+                $this->readBits .= $this->miSO->isOn() ? '1' : '0';
             }
         });
         $this->setClock(SPIClockStage::READY);
@@ -125,7 +125,7 @@ class SPIBus
         for ($i = 0; $i < $bitCount; $i++) {
             $this->setClock(SPIClockStage::READY);
             $this->setClock(SPIClockStage::SAMPLED);
-            $this->readBits .= $this->dataIn->isOn()? '1' : '0';
+            $this->readBits .= $this->miSO->isOn()? '1' : '0';
         }
 
         $this->setClock(SPIClockStage::READY);

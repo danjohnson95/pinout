@@ -33,8 +33,6 @@ class Pin
         $this->level = $pin->level;
         $this->func = $pin->func;
 
-        dd($pin);
-
         return $this;
     }
 

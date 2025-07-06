@@ -26,7 +26,7 @@ class MCP300X
 
         return new self(
             spi: app()->makeWith(
-                SPIBuss::class,
+                SPIBus::class,
                 [
                     'chipSelect' => $chipSelect,
                     'clock' => $clock,

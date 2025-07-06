@@ -42,8 +42,8 @@ class SPIBus
     public function init(): self
     {
         $this->clock->turnOff();
-        $this->dataIn->turnOff();
         $this->dataOut->turnOff();
+        $this->dataIn->makeInput();
         $this->disableChip();
         return $this;
     }

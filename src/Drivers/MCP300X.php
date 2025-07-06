@@ -18,8 +18,8 @@ class MCP300X
     public static function make (
         Pin $chipSelect,
         Pin $clock,
-        Pin $dataIn,
-        Pin $dataOut,
+        Pin $miSO,
+        Pin $moSI,
         MCP $model,
         float $vcc
     ): self {
@@ -28,8 +28,8 @@ class MCP300X
             spi: SPIBus::make(
                 chipSelect: $chipSelect,
                 clock: $clock,
-                dataIn: $dataIn,
-                dataOut: $dataOut,
+                miSO: $miSO,
+                moSI: $moSI,
                 mode: SPIMode::MODE0
             ),
             vcc: $vcc,
@@ -39,8 +39,8 @@ class MCP300X
         return (new self(
             $chipSelect,
             $clock,
-            $dataIn,
-            $dataOut,
+            $miSO,
+            $moSI,
             $mode
         ))->init();
     }

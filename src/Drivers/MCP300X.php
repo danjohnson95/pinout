@@ -13,7 +13,7 @@ class MCP300X
 {
     private int $maxPin = 7;
     private int $mcp3004MaxPin = 3;
-    private int $maxVoltageInt = 1023
+    private int $maxVoltageInt = 1023;
 
     public static function make (
         Pin $chipSelect,

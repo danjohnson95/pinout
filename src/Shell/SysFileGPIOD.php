@@ -64,6 +64,8 @@ class SysFileGPIOD implements Commandable
 
         $gpioinfo = shell_exec("gpioinfo $chip | grep -E '^\\s*line\\s+$pinNumber:'");
 
+        dump($gpioinfo);
+
         if (str_contains($gpioinfo, 'output')) {
             return Func::OUTPUT;
         }
@@ -71,10 +73,20 @@ class SysFileGPIOD implements Commandable
         return Func::INPUT;
     }
 
-    public function setFunction(int $pinNumber, Func $func): self
-    {
-        // Optional: Could configure input/output explicitly here with `gpiod configure` if supported
-        return $this;
+    public function setFunction(
+        int $pinNumber,
+        Func $func,
+        ?Level $level = null
+    ): self {
+        if ($func === Func::INPUT) {
+            $this->getLevel($pinNumber);
+            return $this;
+        }
+
+        return $this->setLevel(
+            $pinNumber,
+            $level !== null ?: Level::LOW
+        );
     }
 
     public function exportPin(int $pinNumber): self

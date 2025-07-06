@@ -64,8 +64,6 @@ class SysFileGPIOD implements Commandable
 
         $gpioinfo = shell_exec("gpioinfo $chip | grep -E '^\\s*line\\s+$pinNumber:'");
 
-        dump($gpioinfo);
-
         if (str_contains($gpioinfo, 'output')) {
             return Func::OUTPUT;
         }

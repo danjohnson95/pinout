@@ -24,16 +24,14 @@ class MCP300X
         float $vcc
     ): self {
 
-        return new self(
-            spi: app()->makeWith(
-                SPIBus::class,
-                [
-                    'chipSelect' => $chipSelect,
-                    'clock' => $clock,
-                    'dataIn' => $dataIn,
-                    'dataOut' => $dataOut,
-                    'mode' => SPIMode::MODE0
-            ]),
+        return new self (
+            spi: SPIBus::make(
+                chipSelect: $chipSelect,
+                clock: $clock,
+                dataIn: $dataIn,
+                dataOut: $dataOut,
+                mode: SPIMode::MODE0
+            ),
             vcc: $vcc,
             model: $model
         );

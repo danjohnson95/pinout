@@ -18,7 +18,6 @@ class ServiceProvider extends BaseServiceProvider
         );
 
         $this->app->bind(Commandable::class, config('pinout.sys_file'));
-        $this->app->bind(SPIInterface::class, SPIBus::class);
     }
 
     public function boot()

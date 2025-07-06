@@ -56,18 +56,17 @@ class MCP300X
     public function getAnalogPin(
         int $pinNumber
     ): ?float {
-        switch (true) {
-            case ($pinNumber > $this->maxPin):
-            case ($pinNumber < 0):
-                throw new \Exception("MCP300X error : Pin $pinNumber is not a valid pin");
-                break;
 
-            case (($pinNumber >= 0) && $pinNumber < $this->mcp3004MaxPin):
-                throw new \Exception("MCP300x error : Pin $pinNumber is not a valid pin on MCP3004");
-                break;
+        if ( $pinNumber < 0 ) {
+            throw new \Exception("MCP300x error : Negative pins are not a valid pins");
+        }
 
-            default:
-                break;
+        if ($pinNumber > $this->maxPin) {
+            throw new \Exception("MCP300X error : Pin $pinNumber is not a valid pin");
+        }
+
+        if ($pinNumber > $this->mcp3004MaxPin) {
+            throw new \Exception("MCP300x error : Pin $pinNumber is not a valid pin on MCP3004");
         }
 
         $this->spi

@@ -96,9 +96,13 @@ class SPIBus
     }
     
     public function writeBits(
-        string $bits
+        string $bits,
+        bool $readWhileWriting = false
     ): self {
-        collect(str_split($bits))->each(function (string $bit) {
+        if ($readWhileWriting) {
+            $this->readBits = '';
+        }
+        collect(str_split($bits))->each(function (string $bit) use ($readWhileWriting) {
             $this->setClock(SPIClockStage::READY);
             if ($bit === '1') {
                 $this->dataOut->turnOn();
@@ -106,6 +110,9 @@ class SPIBus
                 $this->dataOut->turnOff();
             }
             $this->setClock(SPIClockStage::SAMPLED);
+            if ($readWhileWriting) {
+                $this->readBits .= $this->dataIn->isOn()? '1' : '0';
+            }
         });
         $this->setClock(SPIClockStage::READY);
         return $this;

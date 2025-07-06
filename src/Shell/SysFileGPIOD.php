@@ -78,8 +78,6 @@ class SysFileGPIOD implements Commandable
         Func $func,
         ?Level $level = null
     ): self {
-
-        dd($pinNumber,$func);
         if ($func === Func::INPUT) {
             $this->getLevel($pinNumber);
             return $this;

@@ -33,12 +33,13 @@ class Pin
         $this->level = $pin->level;
         $this->func = $pin->func;
 
+        dd($pin);
+
         return $this;
     }
 
     public function isOn(): bool
     {
-        dump($level = $this->isInput());
         return $this->refresh()->level === Level::HIGH;
     }
 

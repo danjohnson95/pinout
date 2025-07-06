@@ -3,7 +3,7 @@
 namespace DanJohnson95\Pinout;
 
 use DanJohnson95\Pinout\Shell\Commandable;
-use DanJohnson95\Pinout\Devices\SPIBus;
+use DanJohnson95\Pinout\Drivers\SPIBus;
 use DanJohnson95\Pinout\Facades\SPIInterface;
 use DanJohnson95\Pinout\Shell\SysFile;
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;

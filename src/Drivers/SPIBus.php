@@ -11,6 +11,7 @@ use DanJohnson95\Pinout\Enums\SPIClockStage;
 class SPIBus
 {
     public string $readBits = '';
+    public array $readBytes = [];
 
     public static function make (
         Pin $chipSelect,
@@ -94,6 +95,22 @@ class SPIBus
         $this->chipSelect->turnOn();
         return $this;
     }
+
+    public function writeBytes(
+        array $bytes,
+        bool $readWhileWriting = false
+    ): self {
+        $this->writeBits(
+            collect($bytes)
+                ->map(fn($e) => sprintf('%08b', $e))
+                ->implode(),
+            $readWhileWriting
+        );
+        if ($readWhileWriting) {
+            $this->fillBytesFromBits();
+        }
+        return $this; 
+    }
     
     public function writeBits(
         string $bits,
@@ -115,6 +132,22 @@ class SPIBus
             }
         });
         $this->setClock(SPIClockStage::READY);
+        return $this;
+    }
+
+    public function readBytes(
+        int $byteCount
+    ): self {
+        $this->readBytes = [];
+        return $this->readBits($byteCount * 8)
+            ->fillBytesFromBits();
+    }
+
+    private function fillBytesFromBits(): self
+    {
+        $this->readBytes = collect(str_split($this->readBytes))
+            ->map(fn($e) => bindec($e))
+            ->toArray();
         return $this;
     }
 

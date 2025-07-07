@@ -145,7 +145,7 @@ class SPIBus
 
     private function fillBytesFromBits(): self
     {
-        $this->readBytes = collect(str_split($this->readBytes))
+        $this->readBytes = collect(str_split($this->readBits))
             ->map(fn($e) => bindec($e))
             ->toArray();
         return $this;

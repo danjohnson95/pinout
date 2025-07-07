@@ -103,7 +103,7 @@ class SPIBus
         $this->writeBits(
             collect($bytes)
                 ->map(fn($e) => sprintf('%08b', $e))
-                ->implode(),
+                ->implode(''),
             $readWhileWriting
         );
         if ($readWhileWriting) {

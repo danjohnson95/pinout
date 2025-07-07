@@ -17,5 +17,5 @@ interface Commandable
 
     public function setLevel(int $pinNumber, Level $level): self;
 
-    public function exportPin(int $pinNumber): self;
+    public function exportPin(int $pinNumber): void;
 }

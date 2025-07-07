@@ -88,10 +88,9 @@ class SysFileGPIOD implements Commandable
         );
     }
 
-    public function exportPin(int $pinNumber): self
+    public function exportPin(int $pinNumber): void
     {
         // No-op for libgpiod
-        return $this;
     }
 
     public function setLevel(int $pinNumber, Level $level): self

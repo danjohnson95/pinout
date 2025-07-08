@@ -42,10 +42,10 @@ class SPIBus
 
     public function init(): self
     {
-        $this->clock->turnOff();
+        $this->setClock(SPIClockStage::IDLE);
         $this->moSI->turnOff();
         $this->miSO->makeInput();
-        $this->disableChip();
+        $this->chipSelect->turnOn();
         return $this;
     }
 
@@ -64,6 +64,17 @@ class SPIBus
     public function setClock(
         SPIClockStage $stage
     ): self {
+
+        if ($stage == SPIClockStage::IDLE) {
+            match($this->mode) {
+                SPIMode::MODE0 => $this->clock->turnOff(),
+                SPIMode::MODE1 => $this->clock->turnOff(),
+                SPIMode::MODE2 => $this->clock->turnOn(),
+                SPIMode::MODE3 => $this->clock->turnOn(),
+            };
+            return $this;
+        }
+
         // Intentional fallthrough 
         switch($this->mode) {
             // Falling edge sampled modes

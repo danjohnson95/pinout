@@ -7,6 +7,7 @@ namespace DanJohnson95\Pinout\Drivers;
 use DanJohnson95\Pinout\Entities\Pin;
 use DanJohnson95\Pinout\Enums\SPIMode;
 use DanJohnson95\Pinout\Enums\SPIClockStage;
+use DanJohnson95\Pinout\Facades\PinService;
 
 class SPIBus
 {
@@ -31,21 +32,21 @@ class SPIBus
     }
 
     private function __construct (
-        protected Pin $chipSelect,
-        protected Pin $clock,
-        protected Pin $miSO,
-        protected Pin $moSI,
-        protected SPIMode $mode
+        public Pin $chipSelect,
+        public Pin $clock,
+        public Pin $miSO,
+        public Pin $moSI,
+        public SPIMode $mode
     ) {
         //
     }
 
     public function init(): self
     {
-        $this->clock->turnOff();
+        $this->setClock(SPIClockStage::IDLE);
         $this->moSI->turnOff();
         $this->miSO->makeInput();
-        $this->disableChip();
+        $this->chipSelect->turnOn();
         return $this;
     }
 
@@ -64,6 +65,17 @@ class SPIBus
     public function setClock(
         SPIClockStage $stage
     ): self {
+
+        if ($stage == SPIClockStage::IDLE) {
+            match($this->mode) {
+                SPIMode::MODE0 => $this->clock->turnOff(),
+                SPIMode::MODE1 => $this->clock->turnOff(),
+                SPIMode::MODE2 => $this->clock->turnOn(),
+                SPIMode::MODE3 => $this->clock->turnOn(),
+            };
+            return $this;
+        }
+
         // Intentional fallthrough 
         switch($this->mode) {
             // Falling edge sampled modes
@@ -143,7 +155,7 @@ class SPIBus
             ->fillBytesFromBits();
     }
 
-    private function fillBytesFromBits(): self
+    public function fillBytesFromBits(): self
     {
         $this->readBytes = collect(str_split($this->readBits, 8))
             ->map(fn($e) => bindec($e))

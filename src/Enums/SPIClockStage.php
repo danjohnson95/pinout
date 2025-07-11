@@ -6,4 +6,5 @@ enum SPIClockStage: int
 {
     case READY = 0;
     case SAMPLED = 1;
+    case IDLE = 2;
 }

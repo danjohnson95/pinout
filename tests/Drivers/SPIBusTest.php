@@ -71,3 +71,97 @@ $modes->each(function ($testMode) {
     });
 });
 
+it('calls writeBits with the correct bit stream when passed bytes', function () {
+    $bytes = [65, 66]; // ASCII 'A' and 'B' -> 01000001 01000010
+    $expectedBits = '0100000101000010';
+
+    // Create a partial mock
+    $mock = Mockery::mock(SPIBus::class)->makePartial();
+
+    // Expect writeBits to be called with the correct bit stream
+    $mock->shouldReceive('writeBits')
+        ->once()
+        ->with($expectedBits, false);
+
+    // Call the real method writeBytes
+    $mock->writeBytes($bytes);
+});
+
+it('doesnt fillBytesFromBits when not reading during write', function () {
+    $bytes = [65, 66]; // ASCII 'A' and 'B' -> 01000001 01000010
+    $expectedBits = '0100000101000010';
+
+    // Create a partial mock
+    $mock = Mockery::mock(SPIBus::class)->makePartial();
+
+    // Expect writeBits to be called with the correct bit stream
+    $mock->shouldReceive('writeBits')
+        ->once()
+        ->with($expectedBits, false);
+
+    // Optionally mock fillBytesFromBits if readWhileWriting is true
+    $mock->shouldNotReceive('fillBytesFromBits');
+
+    // Call the real method writeBytes
+    $mock->writeBytes($bytes);
+});
+
+it('does fillBytesFromBits when reading during write', function () {
+    $bytes = [65, 66]; // ASCII 'A' and 'B' -> 01000001 01000010
+    $expectedBits = '0100000101000010';
+
+    // Create a partial mock
+    $mock = Mockery::mock(SPIBus::class)->makePartial();
+
+    // Expect writeBits to be called with the correct bit stream
+    $mock->shouldReceive('writeBits')
+        ->once()
+        ->with($expectedBits, true);
+
+    $mock->shouldReceive('setClock');
+
+    // Optionally mock fillBytesFromBits if readWhileWriting is true
+    $mock->shouldReceive('fillBytesFromBits');
+
+    PinService::fake();
+    $mock->chipSelect = PinService::pin(1);
+    $mock->clock = PinService::pin(2);
+    $mock->miSO = PinService::pin(3);
+    $mock->moSI = PinService::pin(4);
+    $mock->mode = SPIMode::MODE0;
+
+    // Call the real method writeBytes
+    $mock->writeBytes($bytes,true);
+});
+
+it('converts bits to bytes after readingWhileWriting', function () {
+    $bytes = [65, 66]; // ASCII 'A' and 'B' -> 01000001 01000010
+    $expectedBits = '0100000101000010';
+
+    // Create a partial mock
+    $mock = Mockery::mock(SPIBus::class)->makePartial();
+
+    // Expect writeBits to be called with the correct bit stream
+    $mock->shouldReceive('writeBits')
+        ->once()
+        ->with($expectedBits, true)
+        ->andReturnUsing(function ($bits, $readWhileWriting) use ($mock) {
+            // Simulate filling readBits with mock data
+            $mock->readBits = '0100001001000001'; // Example response
+            return $mock;
+        });
+
+    $mock->shouldReceive('setClock');
+
+    PinService::fake();
+    $mock->chipSelect = PinService::pin(1);
+    $mock->clock = PinService::pin(2);
+    $mock->miSO = PinService::pin(3);
+    $mock->moSI = PinService::pin(4);
+    $mock->mode = SPIMode::MODE0;
+
+    // Call the real method writeBytes
+    $mock->writeBytes($bytes, true);
+
+    expect($mock->readBytes)->toBe([66, 65]);
+});

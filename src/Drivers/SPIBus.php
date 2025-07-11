@@ -7,6 +7,7 @@ namespace DanJohnson95\Pinout\Drivers;
 use DanJohnson95\Pinout\Entities\Pin;
 use DanJohnson95\Pinout\Enums\SPIMode;
 use DanJohnson95\Pinout\Enums\SPIClockStage;
+use DanJohnson95\Pinout\Facades\PinService;
 
 class SPIBus
 {
@@ -31,11 +32,11 @@ class SPIBus
     }
 
     private function __construct (
-        protected Pin $chipSelect,
-        protected Pin $clock,
-        protected Pin $miSO,
-        protected Pin $moSI,
-        protected SPIMode $mode
+        public Pin $chipSelect,
+        public Pin $clock,
+        public Pin $miSO,
+        public Pin $moSI,
+        public SPIMode $mode
     ) {
         //
     }

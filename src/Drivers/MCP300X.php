@@ -8,6 +8,7 @@ use DanJohnson95\Pinout\Entities\Pin;
 use DanJohnson95\Pinout\Enums\SPIMode;
 use DanJohnson95\Pinout\Enums\MCP;
 use DanJohnson95\Pinout\Drivers\SPIBus;
+use Mockery;
 
 class MCP300X
 {
@@ -46,7 +47,7 @@ class MCP300X
     }
 
     private function __construct (
-        protected ?SPIBus $spi,
+        protected mixed $spi,
         protected float $vcc,
         protected MCP $model
     ) {

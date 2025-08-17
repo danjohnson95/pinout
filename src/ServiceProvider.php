@@ -15,6 +15,10 @@ class ServiceProvider extends BaseServiceProvider
             'pinout',
         );
 
+        $this->publishes([
+            __DIR__ . '/Config/pinout.php' => config_path('pinout.php'),
+        ], 'config');
+
         $this->app->bind(Commandable::class, config('pinout.sys_file'));
     }
 

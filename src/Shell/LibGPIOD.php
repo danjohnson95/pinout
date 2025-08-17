@@ -8,7 +8,7 @@ use DanJohnson95\Pinout\Enums\Func;
 use DanJohnson95\Pinout\Enums\Level;
 use Illuminate\Support\Facades\Cache;
 
-class SysFileGPIOD implements Commandable
+class LibGPIOD implements Commandable
 {
     protected ?string $gpioChip;
 

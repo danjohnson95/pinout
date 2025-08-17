@@ -58,8 +58,37 @@ class PinoutFake implements ManagesPins
 
     public function setFunction(Pin $pin, Func $func): Pin
     {
-        // Not implemented
-        return $pin;
+        $pinNumber = $pin->pinNumber;
+        $this->fakePins = $this->fakePins
+            ->map(function ($collectionPin) use ($pinNumber, $func) {
+                if ($collectionPin->pinNumber !== $pinNumber) {
+                    return $collectionPin;
+                }
+
+                return Pin::make(
+                    pinNumber: $pinNumber,
+                    level: Level::LOW,
+                    func: $func,
+                );
+            });
+        
+        return $this->fakePins->findByPinNumber($pinNumber);
+    }
+
+    public function assertPinIsInput(int $pinNumber)
+    {
+        assertSame(
+            Func::INPUT,
+            $this->fakePins->findByPinNumber($pinNumber)->func
+        );
+    }
+
+    public function assertPinIsOutput(int $pinNumber)
+    {
+        assertSame(
+            Func::OUTPUT,
+            $this->fakePins->findByPinNumber($pinNumber)->func
+        );
     }
 
     public function assertPinTurnedOn(int $pinNumber)

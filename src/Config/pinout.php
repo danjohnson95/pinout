@@ -1,5 +1,7 @@
 <?php
 
+use DanJohnson95\Pinout\Shell\SysFile; 
+
 return [
 
     /**
@@ -17,5 +19,8 @@ return [
     'gpio_listener' => [
         'tmp_dir' => '/tmp/pinout/',
         'pid' => 1,
-    ]
+    ],
+
+    'sys_file' => SysFile::class,
+    'gpio_chip' => 'gpiochip0'
 ];

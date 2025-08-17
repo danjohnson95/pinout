@@ -4,12 +4,13 @@ namespace DanJohnson95\Pinout\Console;
 
 use DanJohnson95\Pinout\Enums\Func;
 use DanJohnson95\Pinout\Enums\Level;
-use DanJohnson95\Pinout\Pinout;
+use DanJohnson95\Pinout\Shell\Commandable;
+use DanJohnson95\Pinout\Facades\PinService;
 use Illuminate\Console\Command;
 
 class SetCommand extends Command
 {
-    protected $signature = 'pinout:set {pin} {--func} {--level}';
+    protected $signature = 'pinout:set {pin} {--func=} {--level=}';
     protected $description = 'Sets the state of the pin';
 
     public function handle()
@@ -27,21 +28,22 @@ class SetCommand extends Command
             $func = Func::tryFrom($func);
         }
 
-        if ($level = $this->option('level')) {
+        if (($level = $this->option('level')) !== null) {
             $level = Level::tryFrom($level);
         }
 
         // Now set them.
         if ($func) {
-            Pinout::setFunction($pinNumber, $func);
+            app(Commandable::class)->setFunction($pinNumber, $func);
         }
 
         if ($level) {
-            Pinout::setLevel($pinNumber, $level);
+            app(Commandable::class)->setLevel($pinNumber, $level);
         }
 
-        $state = Pinout::get($this->argument('pin'));
+        $state = PinService::pin($this->argument('pin'));
 
-        $this->info("Pin {$state->pinNumber} is currently {$level}");
+        $levelText = $level?->value ?? $level;
+        $this->info("Pin {$state->pinNumber} is currently {$levelText}");
     }
 }
